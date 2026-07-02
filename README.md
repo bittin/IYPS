@@ -59,7 +59,9 @@ In our digital age, where data breaches and hacks have skyrocketed, robust passw
 
 
 ## Download
-**Disclaimer**: The Google Play account is not owned by me.
+> [!NOTE]
+> - The Google Play account is not owned by me.
+> - This app will be no longer be available on Google Play after September 2026. I don't agree to Google's new developer verification policy requirements. [Keep Android Open](https://keepandroidopen.org/).
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
 alt="Get it on F-Droid"
@@ -157,8 +159,9 @@ New pull requests can be submitted [here](https://github.com/StellarSand/IYPS/pu
 
 
 ## Credits
-- [SecLists](https://github.com/danielmiessler/SecLists) & [kkrypt0nn](https://github.com/kkrypt0nn/wordlists) for the password dictionaries.
-- [EFF](https://www.eff.org) for publishing their wordlist to generate random passphrases.
+- [SecLists](https://github.com/danielmiessler/SecLists) & [kkrypt0nn/wordlists](https://github.com/kkrypt0nn/wordlists) for the password dictionaries.
+- [EFF](https://www.eff.org) for their passphrases word lists.
+- [Arnold G. Reinhold](https://theworld.com/~reinhold/) for the original Diceware wordlist and everyone else mentioned [here](https://www.theworld.com/~reinhold/diceware.html#Diceware%20in%20Other%20Languages|outline) for the word lists in other languages.
 - [Weblate](https://hosted.weblate.org/) for providing free hosting to support translations.
 - [parveshnarwal](https://github.com/parveshnarwal) for publishing the app on Google Play.
 - [Contributors](https://github.com/StellarSand/IYPS/graphs/contributors) & translators for making this app better.

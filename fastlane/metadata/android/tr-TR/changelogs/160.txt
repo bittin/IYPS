@@ -1,0 +1,7 @@
+- Android 17 desteği.
+- Parola öbekleri oluşturmak için kelime listesi seçme seçeneği.
+- Parola öbekleri oluşturulurken sayıların dahil edilmesi.
+- Oluşturulan parola öbeklerinin ayrıntılarının gösterilmesi.
+- Kopyalanan öğeleri otomatik olarak silme seçeneği eklendi.
+- Çeşitli optimizasyonlar.
+- Yeni çeviriler ve mevcut çevirilerin güncellenmesi (topluluk tarafından sağlandı).

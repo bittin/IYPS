@@ -1,0 +1,7 @@
+- Support for Android 17.
+- Option to select wordlist for generating passphrases.
+- Include numbers while generating passphrases.
+- Show details for generated passphrases.
+- Added option to automatically clear copied items.
+- Multiple optimizations.
+- New translations & updated existing ones (contributed by the community).

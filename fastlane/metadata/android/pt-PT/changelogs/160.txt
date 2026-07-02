@@ -1,0 +1,7 @@
+- Compatibilidade com o Android 17.
+- Opção para selecionar uma lista de palavras para a geração de frases-passe.
+- Inclusão de números na geração de frases-passe.
+- Exibição de detalhes das frases-passe geradas.
+- Adicionada a opção para limpar automaticamente os itens copiados.
+- Várias otimizações.
+- Novas traduções e atualização das já existentes (contribuição da comunidade).

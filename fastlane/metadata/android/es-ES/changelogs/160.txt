@@ -1,0 +1,7 @@
+- Compatibilidad con Android 17.
+- Opción para seleccionar una lista de palabras para generar contraseñas.
+- Incluir números al generar contraseñas.
+- Mostrar detalles de las contraseñas generadas.
+- Se ha añadido la opción de borrar automáticamente los elementos copiados.
+- Varias optimizaciones.
+- Nuevas traducciones y actualización de las ya existentes (aportadas por la comunidad).

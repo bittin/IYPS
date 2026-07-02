@@ -112,15 +112,12 @@ class TestPasswordFragment : BasePwdResultsFragment() {
         )
         
         // Prevent dragging of appbar when scrollview is not visible
-        val appBarLayoutBehavior =
-            AppBarLayout.Behavior().also {
-                (fragmentBinding.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior = it
-            }
-        appBarLayoutBehavior.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
-            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-                return !isInitialLaunch
-            }
-        })
+        (((fragmentBinding.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior) as AppBarLayout.Behavior)
+            .setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
+                override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                    return !isInitialLaunch
+                }
+            })
         
         fragmentBinding.scrollView.isVisible = false
         

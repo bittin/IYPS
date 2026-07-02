@@ -1,0 +1,7 @@
+- Podpora systému Android 17.
+- Možnost výběru seznamu slov pro generování hesel.
+- Zahrnutí čísel při generování hesel.
+- Zobrazení podrobností o vygenerovaných heslech.
+- Přidána možnost automatického vymazání zkopírovaných položek.
+- Řada optimalizací.
+- Nové překlady a aktualizace stávajících (přispělo je komunita).

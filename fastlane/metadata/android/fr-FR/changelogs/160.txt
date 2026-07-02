@@ -1,0 +1,7 @@
+- Prise en charge d'Android 17.
+- Option permettant de sélectionner une liste de mots pour la génération de phrases de passe.
+- Ajout de chiffres lors de la génération de phrases de passe.
+- Affichage des détails des phrases de passe générées.
+- Ajout d'une option permettant d'effacer automatiquement les éléments copiés.
+- Diverses optimisations.
+- Nouvelles traductions et mise à jour des traductions existantes (fournies par la communauté).

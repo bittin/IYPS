@@ -1,0 +1,7 @@
+- Compatibilidade com o Android 17.
+- Opção para selecionar uma lista de palavras para a geração de senhas.
+- Inclusão de números na geração de senhas.
+- Exibição de detalhes das senhas geradas.
+- Adicionada a opção de limpar automaticamente os itens copiados.
+- Várias otimizações.
+- Novas traduções e atualização das já existentes (contribuição da comunidade).

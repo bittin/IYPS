@@ -1,0 +1,7 @@
+- Android 17 tugi.
+- Võimalus valida paroolifraaside genereerimiseks sõnastik.
+- Numbrite lisamine paroolifraaside genereerimisel.
+- Genereeritud paroolifraaside üksikasjade kuvamine.
+- Lisatud võimalus kopeeritud kirjed automaatselt kustutada.
+- Mitmed optimeerimised.
+- Uued tõlked ja olemasolevate tõlgete uuendamine (kogukonna poolt esitatud).
