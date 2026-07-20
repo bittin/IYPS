@@ -41,6 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_multi_pwds"
+            app:counterEnabled="true"
+            app:counterMaxLength="5000"
             app:boxStrokeWidthFocused="0dp"
             app:boxStrokeWidth="0dp"
             style="?attr/textInputFilledStyle">
@@ -49,7 +51,8 @@
             android:id="@+id/multiPwdText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minLines="3">
+            android:minLines="3"
+            android:maxLength="5000">
             <requestFocus/>
         </com.google.android.material.textfield.TextInputEditText>
 

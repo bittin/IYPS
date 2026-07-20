@@ -19,7 +19,9 @@ package com.iyps.bottomsheets
 
 import android.app.Activity
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,11 +35,10 @@ import com.iyps.activities.MultiPwdActivity
 import com.iyps.databinding.BottomSheetFooterBinding
 import com.iyps.databinding.BottomSheetHeaderBinding
 import com.iyps.databinding.BottomSheetTestMultiPwdBinding
-import com.iyps.objects.MultiPwdList
+import com.iyps.objects.MultiPwdsInput
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.FileNotFoundException
 
 class TestMultiPwdBottomSheet : BottomSheetDialogFragment() {
     
@@ -80,48 +81,40 @@ class TestMultiPwdBottomSheet : BottomSheetDialogFragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val fileUri = result.data?.data
-                lifecycleScope.launch(Dispatchers.IO) {
-                    try {
-                        fileUri?.let {
-                            requireActivity().contentResolver.openInputStream(it)?.use { inputStream ->
-                                inputStream.bufferedReader().use { bufferedReader ->
-                                    MultiPwdList.pwdList.apply {
-                                        if (isNotEmpty()) clear()
-                                        // Read file line by line
-                                        bufferedReader.forEachLine { line ->
-                                            if (line.isNotEmpty()) add(line)
-                                        }
-                                    }
-                                }
+                fileUri?.let {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        if (isFileEmpty(requireContext(), it)) {
+                            withContext(Dispatchers.Main) {
+                                dismiss()
                             }
                         }
-                        withContext(Dispatchers.Main) {
-                            dismiss()
-                            startActivity(
-                                Intent(requireActivity(), MultiPwdActivity::class.java),
-                                ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle()
-                            )
-                        }
-                    }
-                    catch (fileNotFoundException: FileNotFoundException) {
-                        fileNotFoundException.printStackTrace()
-                        withContext(Dispatchers.Main) {
-                            /*UiUtils.showSnackbar(mainActivity.activityBinding.mainCoordLayout,
-                                                 "File not found",
-                                                 fragmentBinding.selectFab)*/
-                        }
-                    }
-                    catch (e: Exception) {
-                        e.printStackTrace()
-                        withContext(Dispatchers.Main) {
-                            /*UiUtils.showSnackbar(mainActivity.activityBinding.mainCoordLayout,
-                                                 "Error reading file",
-                                                 fragmentBinding.selectFab)*/
+                        else {
+                            MultiPwdsInput.currentSource = MultiPwdsInput.Source.FileInput(it)
+                            withContext(Dispatchers.Main) {
+                                dismiss()
+                                startActivity(
+                                    Intent(requireActivity(), MultiPwdActivity::class.java),
+                                    ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle()
+                                )
+                            }
                         }
                     }
                 }
             }
         }
+    
+    fun isFileEmpty(context: Context, fileUri: Uri): Boolean {
+        return try {
+            context.contentResolver.openAssetFileDescriptor(fileUri, "r")
+                ?.use { assetFileDescriptor ->
+                    assetFileDescriptor.length == 0L
+                }
+            ?: true
+        }
+        catch (_: Exception) {
+            true
+        }
+    }
     
     override fun onDestroyView() {
         super.onDestroyView()

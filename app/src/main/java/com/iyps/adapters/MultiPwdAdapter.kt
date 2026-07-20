@@ -24,10 +24,25 @@ import com.iyps.R
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import me.stellarsand.android.fastscroll.PopupTextProvider
 
-class MultiPwdAdapter(private val aListViewItems: List<String>,
-                      private val clickListener: OnItemClickListener): RecyclerView.Adapter<ListViewHolder>(), PopupTextProvider {
+class MultiPwdAdapter(
+    private val clickListener: OnItemClickListener
+): PagingDataAdapter<String, ListViewHolder>(DIFF_CALLBACK), PopupTextProvider {
+    
+    private companion object {
+        private val DIFF_CALLBACK =
+            object : DiffUtil.ItemCallback<String>() {
+                override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
+                override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
+            }
+    }
     
     interface OnItemClickListener {
         fun onItemClick(position: Int)
@@ -57,18 +72,10 @@ class MultiPwdAdapter(private val aListViewItems: List<String>,
     }
     
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.passwordLine.text = aListViewItems[position]
-    }
-    
-    override fun getItemCount(): Int {
-        return aListViewItems.size
-    }
-    
-    override fun getItemViewType(position: Int): Int {
-        return position
+        holder.passwordLine.text = getItem(position)!!
     }
     
     override fun getPopupText(view: View, position: Int): CharSequence {
-        return aListViewItems[position].first().uppercaseChar().toString()
+        return getItem(position)!!.first().uppercaseChar().toString()
     }
 }

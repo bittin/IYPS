@@ -17,17 +17,17 @@
 
 package com.iyps.objects
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import android.net.Uri
 
-object MultiPwdList {
+object MultiPwdsInput {
+    sealed interface Source {
+        data class FileInput(val fileUri: Uri) : Source
+        data class ManualInput(val lines: List<String>) : Source
+    }
     
-    val pwdList by lazy { arrayListOf<String>() }
+    var currentSource: Source? = null
     
-    suspend fun sortPwdList(isAscending: Boolean) {
-        withContext(Dispatchers.Default) {
-            if (isAscending) pwdList.sortBy { it.lowercase() }
-            else pwdList.sortByDescending { it.lowercase() }
-        }
+    fun clear() {
+        currentSource = null
     }
 }

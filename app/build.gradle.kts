@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.bundles.navigation)
     implementation(libs.zxcvbn4j)
+    implementation(libs.paging3)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidFastScrollKt)
     implementation(libs.lottie)

@@ -61,8 +61,4 @@ class LicenseItemAdapter(private val aListViewItems: ArrayList<License>,
     override fun getItemCount(): Int {
         return aListViewItems.size
     }
-    
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
 }

@@ -110,8 +110,4 @@ class GenerateMultiAdapter(private val aListViewItems: ArrayList<GenMultiItem>,
     override fun getItemCount(): Int {
         return aListViewItems.size
     }
-    
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
 }

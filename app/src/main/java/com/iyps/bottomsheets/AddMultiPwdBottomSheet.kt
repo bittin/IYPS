@@ -31,10 +31,11 @@ import com.iyps.activities.MultiPwdActivity
 import com.iyps.databinding.BottomSheetAddMultiPwdBinding
 import com.iyps.databinding.BottomSheetFooterBinding
 import com.iyps.databinding.BottomSheetHeaderBinding
-import com.iyps.objects.MultiPwdList
+import com.iyps.objects.MultiPwdsInput
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class AddMultiPwdBottomSheet : BottomSheetDialogFragment() {
     
@@ -61,7 +62,7 @@ class AddMultiPwdBottomSheet : BottomSheetDialogFragment() {
             job?.cancel()
             job =
                 lifecycleScope.launch {
-                    delay(300)
+                    delay(300.milliseconds)
                     footerBinding.doneBtn.apply {
                         isEnabled = charSequence!!.isNotEmpty()
                     }
@@ -72,9 +73,14 @@ class AddMultiPwdBottomSheet : BottomSheetDialogFragment() {
         footerBinding.doneBtn.apply {
             isVisible = true
             setOnClickListener {
-                bottomSheetBinding.multiPwdText.text!!.split("\n")
-                    .filter { it.isNotEmpty() }
-                    .forEach { MultiPwdList.pwdList.add(it) }
+                MultiPwdsInput.currentSource =
+                    MultiPwdsInput.Source.ManualInput(
+                        bottomSheetBinding.multiPwdText.text!!
+                            .lineSequence()
+                            .filter { it.isNotBlank() }
+                            .toList()
+                    )
+                
                 dismiss()
                 startActivity(Intent(requireActivity(), MultiPwdActivity::class.java),
                               ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle())
