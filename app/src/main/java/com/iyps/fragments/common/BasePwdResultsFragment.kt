@@ -17,6 +17,7 @@
 
 package com.iyps.fragments.common
 
+import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -31,6 +32,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.iyps.R
@@ -155,8 +158,35 @@ abstract class BasePwdResultsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         
         clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val argbEvaluator = ArgbEvaluator()
+        val colorSurfaceContainerHigh =
+            MaterialColors.getColor(
+                fragmentBinding.passwordBox,
+                com.google.android.material.R.attr.colorSurfaceContainerHigh
+            )
+        val colorSurfaceContainerHighest =
+            MaterialColors.getColor(
+                fragmentBinding.passwordBox,
+                com.google.android.material.R.attr.colorSurfaceContainerHighest
+            )
         
         fragmentBinding.passwordText.isSingleLine = true
+        
+        // Set surfaceContainerHighest color for text box background when appbar is lifted
+        // to prevent contrast issues
+        // This is also the default behavior of Material SearchView
+        fragmentBinding.appBar.addLiftOnScrollProgressListener(
+            object : AppBarLayout.LiftOnScrollProgressListener() {
+                override fun onUpdate(elevation: Float, backgroundColor: Int, progress: Float) {
+                    fragmentBinding.passwordBox.boxBackgroundColor =
+                    argbEvaluator.evaluate(
+                        progress,
+                        colorSurfaceContainerHigh,
+                        colorSurfaceContainerHighest
+                    ) as Int
+                }
+            }
+        )
         
         setupFragmentContent()
         

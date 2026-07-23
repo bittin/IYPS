@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~     Copyright (C) 2022-present Techlore
+  ~     Copyright (C) 2022-present StellarSand
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU General Public License as published by
@@ -18,6 +18,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="?attr/colorPrimaryContainer" android:state_checked="true"/>
-    <item android:color="@android:color/transparent" android:state_checked="false"/>
+    <item android:color="@android:color/transparent" android:state_checked="true"/>
+    <item android:color="?attr/colorOutlineVariant" android:state_checked="false"/>
 </selector>

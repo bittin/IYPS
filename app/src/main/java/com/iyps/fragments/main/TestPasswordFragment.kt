@@ -117,10 +117,10 @@ class TestPasswordFragment : BasePwdResultsFragment() {
                 (fragmentBinding.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior = it
             }
         appBarLayoutBehavior.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
-                override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-                    return !isInitialLaunch
-                }
-            })
+            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                return !isInitialLaunch
+            }
+        })
         
         fragmentBinding.scrollView.isVisible = false
         

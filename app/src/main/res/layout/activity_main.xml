@@ -60,7 +60,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/password"
-                android:textSize="@dimen/text_16"
                 style="@style/ToggleButtonStyle"/>
 
             <com.google.android.material.button.MaterialButton
@@ -68,7 +67,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/passphrase"
-                android:textSize="@dimen/text_16"
                 style="@style/ToggleButtonStyle"/>
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -80,8 +78,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:itemTextAppearanceActive="@style/NavItemText"
-        app:itemTextAppearanceInactive="@style/NavItemText"
+        app:itemTextAppearanceActive="@style/NavItemTextActive"
+        app:itemTextAppearanceInactive="@style/NavItemTextInactive"
         app:menu="@menu/menu_bottom_nav"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

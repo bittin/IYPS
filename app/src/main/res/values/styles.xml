@@ -27,16 +27,22 @@
     <!--#########################################################################################-->
 
     <!--Bottom Nav-->
-    <style name="NavItemText" parent="TextAppearance.Material3.LabelMedium">
+    <style name="BaseNavItemText" parent="TextAppearance.Material3.LabelMedium">
         <item name="android:textSize">@dimen/text_14</item>
     </style>
+
+    <style name="NavItemTextActive" parent="BaseNavItemText">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NavItemTextInactive" parent="BaseNavItemText"/>
 
     <!--#########################################################################################-->
 
     <!--Base linear progress indicator style-->
     <style name="ProgressIndicatorStyle" parent="Widget.Material3Expressive.LinearProgressIndicator">
         <item name="trackCornerRadius">@dimen/margin_8</item>
-        <item name="trackThickness">@dimen/margin_65</item>
+        <item name="trackThickness">@dimen/margin_60</item>
         <item name="trackStopIndicatorSize">0dp</item>
     </style>
 
@@ -45,6 +51,9 @@
     <!--Toggle group button style-->
     <style name="ToggleButtonStyle" parent="Widget.Material3Expressive.Button.OutlinedButton">
         <item name="backgroundTint">@color/toggle_btn_bg_color</item>
+        <item name="iconTint">@color/toggle_btn_text_color</item>
+        <item name="android:textColor">@color/toggle_btn_text_color</item>
+        <item name="android:textSize">@dimen/text_15</item>
     </style>
 
     <!--#########################################################################################-->
@@ -69,7 +78,8 @@
 
     <!--Base theme chip style-->
     <style name="BaseThemeChipStyle" parent="Widget.Material3.Chip.Filter">
-        <item name="chipBackgroundColor">@color/chip_bg_color</item>
+        <item name="chipStrokeColor">@color/theme_chip_stroke_color</item>
+        <item name="chipBackgroundColor">@color/theme_chip_bg_color</item>
         <item name="chipSurfaceColor">@android:color/transparent</item>
         <item name="closeIconStartPadding">@dimen/margin_4</item>
         <item name="closeIconSize">24dp</item>
