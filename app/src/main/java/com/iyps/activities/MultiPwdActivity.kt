@@ -76,6 +76,7 @@ class MultiPwdActivity : AppCompatActivity(), MultiPwdAdapter.OnItemClickListene
     private var pagingJob: Job? = null
     private var originalIndicesList = listOf<Int>()
     private var originalPointersList = listOf<LinePointer>()
+    private var shouldScrollToTop = false
     var isGridView = false
     var isAscSort = false
     
@@ -143,6 +144,7 @@ class MultiPwdActivity : AppCompatActivity(), MultiPwdAdapter.OnItemClickListene
         // Sort
         activityBinding.sortButton.setOnClickListener {
             isAscSort = !isAscSort
+            shouldScrollToTop = true
             lifecycleScope.launch {
                 sortAndLoadData()
             }
@@ -173,14 +175,14 @@ class MultiPwdActivity : AppCompatActivity(), MultiPwdAdapter.OnItemClickListene
                                          else R.drawable.ic_view_list)
     }
     
-     // This function scans the text file line by line to map it out,
-     // without loading all the text into memory at once.
-     // For every line, it saves a pointer object.
-     // This pointer remembers:
-     // - The exact byte position where the line starts in the file
-     // - The size of that line in bytes
-     // - The actual text (stored temporarily so we can sort it later)
-     private suspend fun buildFileLinePointersMap(fileUri: Uri) {
+    // This function scans the text file line by line to map it out,
+    // without loading all the text into memory at once.
+    // For every line, it saves a pointer object.
+    // This pointer remembers:
+    // - The exact byte position where the line starts in the file
+    // - The size of that line in bytes
+    // - The actual text (stored temporarily so we can sort it later)
+    private suspend fun buildFileLinePointersMap(fileUri: Uri) {
         withContext(Dispatchers.IO) {
             val pointers = mutableListOf<LinePointer>()
             var currentOffset = 0L
@@ -246,8 +248,12 @@ class MultiPwdActivity : AppCompatActivity(), MultiPwdAdapter.OnItemClickListene
                     lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         launch {
                             multiPwdAdapter.onPagesUpdatedFlow.collect {
-                                activityBinding.recyclerViewRoot.recyclerView
-                                    .scrollToPosition(0)
+                                // Scroll to top only when sort prefs changed,
+                                // not when items inserted/deleted/updated
+                                if (shouldScrollToTop) {
+                                    activityBinding.recyclerViewRoot.recyclerView.scrollToPosition(0)
+                                    shouldScrollToTop = false
+                                }
                             }
                         }
                         
