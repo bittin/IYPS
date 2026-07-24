@@ -17,13 +17,14 @@
 
 package com.iyps.fragments.main
 
+import android.graphics.Color
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-import android.util.TypedValue
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -33,9 +34,16 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.core.widget.doOnTextChanged
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.lifecycleScope
+import androidx.transition.Fade
+import androidx.transition.Transition
+import androidx.transition.TransitionListenerAdapter
+import androidx.transition.TransitionManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.Chip
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.transition.MaterialContainerTransform
 import com.iyps.activities.MainActivity
 import com.iyps.bottomsheets.TestMultiPwdBottomSheet
 import com.iyps.fragments.common.BasePwdResultsFragment
@@ -59,31 +67,9 @@ class TestPasswordFragment : BasePwdResultsFragment() {
         mainActivity = requireActivity() as MainActivity
         var job: Job? = null
         var isInitialLaunch = true
-        val displayMetrics = resources.displayMetrics
-        var toolbarHeightInPx = 0
-        var toolbarTopInsets = -1
-        
-        TypedValue().let {
-            requireContext().theme.resolveAttribute(
-                android.R.attr.actionBarSize,
-                it,
-                true
-            )
-            toolbarHeightInPx = TypedValue.complexToDimensionPixelSize(it.data, displayMetrics)
-        }
+        val isIncogKeyboard = get<PreferenceManager>().getBoolean (INCOG_KEYBOARD)
         
         // Adjust UI components for edge to edge
-        ViewCompat.setOnApplyWindowInsetsListener(fragmentBinding.toolbar) { _, windowInsets ->
-            if (toolbarTopInsets == -1) {
-                val insets =
-                    windowInsets.getInsets(
-                        WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
-                    )
-                toolbarTopInsets = insets.top
-            }
-            
-            WindowInsetsCompat.CONSUMED
-        }
         ViewCompat.setOnApplyWindowInsetsListener(fragmentBinding.scrollView) { v, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()
                                                         or WindowInsetsCompat.Type.displayCutout())
@@ -100,17 +86,6 @@ class TestPasswordFragment : BasePwdResultsFragment() {
             WindowInsetsCompat.CONSUMED
         }
         
-        // Set toolbar height to height of whole screen (excluding status & nav bars),
-        // so that editText is at center of screen for first time.
-        // Don't move this within setOnApplyWindowInsetsListener() above
-        setToolbarHeight(
-            displayMetrics.heightPixels -
-            convertDpToPx(requireContext(), 100f)
-            // 100 = 64 + 36
-            // Bottom navigation bar height = 64dp
-            // Extra bottom margin to move the editText a little upwards = 36dp
-        )
-        
         // Prevent dragging of appbar when scrollview is not visible
         val appBarLayoutBehavior =
             AppBarLayout.Behavior().also {
@@ -122,14 +97,35 @@ class TestPasswordFragment : BasePwdResultsFragment() {
             }
         })
         
+        fragmentBinding.topPasswordBox.isVisible = false
+        fragmentBinding.centerPasswordBox.isVisible = true
         fragmentBinding.scrollView.isVisible = false
         
-        fragmentBinding.passwordText.apply {
-            if (get<PreferenceManager>().getBoolean (INCOG_KEYBOARD)) {
-                imeOptions = IME_FLAG_NO_PERSONALIZED_LEARNING
-                inputType = TYPE_TEXT_VARIATION_PASSWORD
+        if (isInitialLaunch) {
+            fragmentBinding.centerPasswordText.apply {
+                if (isIncogKeyboard) setIncogMode()
+                setOnEditorActionListener { textView, actionId, _ ->
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        textView.text.let {
+                            if (it.isNotEmpty()){
+                                transformToTopTextBox(it)
+                                displayPwdResults(it)
+                                isInitialLaunch = false
+                            }
+                            
+                        }
+                        true
+                    }
+                    else false
+                }
             }
+        }
+        
+        fragmentBinding.topPasswordText.apply {
+            if (isIncogKeyboard) setIncogMode()
             doOnTextChanged { charSequence, _, _, _ ->
+                if (isInitialLaunch) return@doOnTextChanged
+                
                 // Introduce a subtle delay
                 // So passwords are checked after typing is finished
                 job?.cancel()
@@ -143,13 +139,8 @@ class TestPasswordFragment : BasePwdResultsFragment() {
                                 }
                             }
                             displayPwdResults(charSequence)
-                            if (!isInitialLaunch && AppState.showSupportBtmSheet) {
+                            if (AppState.showSupportBtmSheet) {
                                 showSupportAnimBtmSheet(parentFragmentManager)
-                            }
-                            if (isInitialLaunch) {
-                                isInitialLaunch = false
-                                fragmentBinding.scrollView.isVisible = true
-                                setToolbarHeight(toolbarTopInsets + toolbarHeightInPx)
                             }
                         }
                         // If edit text is empty or cleared, reset everything
@@ -192,15 +183,51 @@ class TestPasswordFragment : BasePwdResultsFragment() {
         }
     }
     
-    private fun setToolbarHeight(height: Int) {
-        fragmentBinding.toolbar.apply {
-            val params = layoutParams
-            params.height = height
-            layoutParams = params
-            convertDpToPx(requireContext(), 12f).let {
-                setPaddingRelative(paddingStart, it, paddingEnd, it)
+    private fun TextInputEditText.setIncogMode() {
+        imeOptions = IME_FLAG_NO_PERSONALIZED_LEARNING
+        inputType = TYPE_TEXT_VARIATION_PASSWORD
+    }
+    
+    private fun transformToTopTextBox(initialText: CharSequence) {
+        val transform =
+            MaterialContainerTransform().apply {
+                startView = fragmentBinding.centerPasswordBox
+                endView = fragmentBinding.topPasswordBox
+                duration = 350L
+                scrimColor = Color.TRANSPARENT // Prevent dark/dim background
+                drawingViewId = fragmentBinding.testCoordLayout.id
+                fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
+                
+                addListener(object : TransitionListenerAdapter() {
+                    override fun onTransitionEnd(transition: Transition) {
+                        transition.removeListener(this)
+                        TransitionManager.beginDelayedTransition(
+                            fragmentBinding.root,
+                            Fade(Fade.IN).apply {
+                                duration = 250L
+                                interpolator = FastOutSlowInInterpolator()
+                                addTarget(fragmentBinding.scrollView)
+                            }
+                        )
+                        fragmentBinding.scrollView.isVisible = true
+                    }
+                })
             }
-            requestLayout()
+        
+        fragmentBinding.topPasswordText.apply {
+            setText(initialText)
+            setSelection(initialText.length)
+        }
+        
+        TransitionManager.beginDelayedTransition(
+            fragmentBinding.root,
+            transform
+        )
+        
+        fragmentBinding.centerPasswordBox.isVisible = false
+        fragmentBinding.topPasswordBox.apply {
+            isVisible = true
+            requestFocus()
         }
     }
     

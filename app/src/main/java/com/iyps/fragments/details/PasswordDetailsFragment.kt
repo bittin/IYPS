@@ -45,8 +45,8 @@ class PasswordDetailsFragment : BasePwdResultsFragment() {
         
         fragmentBinding.apply {
             testMultipleFab.isVisible = false
-            passwordBox.hint = getString(R.string.password)
-            passwordText.apply {
+            topPasswordBox.hint = getString(R.string.password)
+            topPasswordText.apply {
                 setText(password)
                 isFocusable = false
                 isCursorVisible = false

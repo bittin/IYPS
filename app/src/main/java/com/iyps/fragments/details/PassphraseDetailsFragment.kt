@@ -78,8 +78,8 @@ class PassphraseDetailsFragment : BasePwdResultsFragment() {
             matchSequenceTitle.isVisible = false
             matchSequenceSubtitle.isVisible = false
             testMultipleFab.isVisible = false
-            passwordBox.hint = getString(R.string.passphrase)
-            passwordText.apply {
+            topPasswordBox.hint = getString(R.string.passphrase)
+            topPasswordText.apply {
                 // Remove 128 chars limit
                 filters = filters.filterNot { it is InputFilter.LengthFilter }.toTypedArray()
                 

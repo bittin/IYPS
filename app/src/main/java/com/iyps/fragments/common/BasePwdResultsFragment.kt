@@ -161,16 +161,16 @@ abstract class BasePwdResultsFragment : Fragment() {
         val argbEvaluator = ArgbEvaluator()
         val colorSurfaceContainerHigh =
             MaterialColors.getColor(
-                fragmentBinding.passwordBox,
+                fragmentBinding.topPasswordBox,
                 com.google.android.material.R.attr.colorSurfaceContainerHigh
             )
         val colorSurfaceContainerHighest =
             MaterialColors.getColor(
-                fragmentBinding.passwordBox,
+                fragmentBinding.topPasswordBox,
                 com.google.android.material.R.attr.colorSurfaceContainerHighest
             )
         
-        fragmentBinding.passwordText.isSingleLine = true
+        fragmentBinding.topPasswordText.isSingleLine = true
         
         // Set surfaceContainerHighest color for text box background when appbar is lifted
         // to prevent contrast issues
@@ -178,7 +178,7 @@ abstract class BasePwdResultsFragment : Fragment() {
         fragmentBinding.appBar.addLiftOnScrollProgressListener(
             object : AppBarLayout.LiftOnScrollProgressListener() {
                 override fun onUpdate(elevation: Float, backgroundColor: Int, progress: Float) {
-                    fragmentBinding.passwordBox.boxBackgroundColor =
+                    fragmentBinding.topPasswordBox.boxBackgroundColor =
                     argbEvaluator.evaluate(
                         progress,
                         colorSurfaceContainerHigh,
@@ -593,7 +593,7 @@ abstract class BasePwdResultsFragment : Fragment() {
         return buildString {
             if (!isPassphrase) {
                 append("# ${getString(R.string.password)}\n")
-                append("${fragmentBinding.passwordText.text.toString()}\n\n")
+                append("${fragmentBinding.topPasswordText.text.toString()}\n\n")
                 append("## ${getString(R.string.est_time_to_crack)}\n\n")
                 append("#### ${getString(R.string.ten_b_guesses_per_sec)}\n")
                 append("\u2022 ${fragmentBinding.tenBGuessesSubtitle.text}\n")
@@ -629,7 +629,7 @@ abstract class BasePwdResultsFragment : Fragment() {
             }
             else {
                 append("# ${getString(R.string.passphrase)}\n")
-                append("${fragmentBinding.passwordText.text.toString()}\n\n")
+                append("${fragmentBinding.topPasswordText.text.toString()}\n\n")
                 append("## ${getString(R.string.entropy)}\n")
                 append("${fragmentBinding.entropySubtitle.text}\n\n")
                 append("## ${getString(R.string.statistics)}\n")
