@@ -209,7 +209,12 @@ class GeneratePassphraseFragment : Fragment() {
                     .putExtra("PwdLine", generatedPhraseString)
                     .putExtra("isPassphrase", true)
                     .putExtra("phraseDetails", getPhraseDetails()),
-                ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle()
+                
+                ActivityOptions.makeSceneTransitionAnimation(
+                    mainActivity,
+                    fragmentBinding.phraseGeneratedTextView,
+                    "gen_details_btn"
+                ).toBundle()
             )
         }
         

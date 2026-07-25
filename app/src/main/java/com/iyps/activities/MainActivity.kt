@@ -36,6 +36,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.iyps.R
 import com.iyps.appmanager.ApplicationManager
 import com.iyps.bottomsheets.DevVerfWarnBottomSheet
@@ -80,7 +81,14 @@ class MainActivity : AppCompatActivity() {
             DynamicColors.applyToActivitiesIfAvailable(applicationContext as ApplicationManager) // For other activities
         }
         enableEdgeToEdge()
-        window.setNavBarContrastEnforced()
+        window.apply {
+            setNavBarContrastEnforced()
+            
+            // This prevents generated pwd/phrase textview from flickering after transition,
+            // when returning from DetailsActivity
+            setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+            reenterTransition = null
+        }
         super.onCreate(savedInstanceState)
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         activityBinding = ActivityMainBinding.inflate(layoutInflater)

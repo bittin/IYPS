@@ -202,9 +202,16 @@ class GeneratePasswordFragment : Fragment() {
         
         // Details
         fragmentBinding.pwdDetailsBtn.setOnClickListener {
-            startActivity(Intent(requireActivity(), DetailsActivity::class.java)
-                              .putExtra("PwdLine", generatedPwdString),
-                          ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle())
+            startActivity(
+                Intent(mainActivity, DetailsActivity::class.java)
+                    .putExtra("PwdLine", generatedPwdString),
+                
+                ActivityOptions.makeSceneTransitionAnimation(
+                    mainActivity,
+                    fragmentBinding.pwdGeneratedTextView,
+                    "gen_details_btn"
+                ).toBundle()
+            )
         }
         
         // Copy

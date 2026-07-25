@@ -37,3 +37,7 @@
 
 # Keep the line number information for debugging stack traces.
 -keepattributes SourceFile,LineNumberTable
+
+# Prevent error while generating signed apk:
+# Missing class javax.annotation.Nullable (referenced from: okio.Segment okio.Buffer.head and 2 other contexts)
+-dontwarn javax.annotation.Nullable

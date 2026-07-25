@@ -21,6 +21,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -36,6 +37,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import com.iyps.R
 import com.iyps.adapters.MultiPwdAdapter
@@ -87,6 +89,11 @@ class MultiPwdActivity : AppCompatActivity(), MultiPwdAdapter.OnItemClickListene
             requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
             enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
             returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+            
+            // This prevents the clicked item from flickering after transition,
+            // when returning from DetailsActivity
+            setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+            reenterTransition = null
         }
         
         super.onCreate(savedInstanceState)
@@ -279,11 +286,17 @@ class MultiPwdActivity : AppCompatActivity(), MultiPwdAdapter.OnItemClickListene
     }
     
     // On click
-    override fun onItemClick(position: Int) {
+    override fun onItemClick(itemView: View, position: Int) {
         startActivity(
             Intent(this, DetailsActivity::class.java)
-                .putExtra("PwdLine", multiPwdAdapter.peek(position)),
-            ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                .putExtra("PwdLine", multiPwdAdapter.peek(position))
+                .putExtra("ItemPos", position),
+            
+            ActivityOptions.makeSceneTransitionAnimation(
+                this,
+                itemView,
+                "item_$position"
+            ).toBundle()
         )
     }
     
