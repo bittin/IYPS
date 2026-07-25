@@ -1,3 +1,5 @@
+ÖNEMLİ: Uygulamanın imzalama anahtarı değişti. Bu sürümü yüklemeden önce daha önce yüklenmiş tüm sürümleri kaldırın.
+
 - Android 17 desteği.
 - Parola öbekleri oluşturmak için kelime listesi seçme seçeneği.
 - Parola öbekleri oluşturulurken sayıların dahil edilmesi.

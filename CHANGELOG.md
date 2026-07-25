@@ -2,6 +2,9 @@
 
 
 ## v1.6.0
+> [!IMPORTANT]
+> The app's signing key has changed. Please uninstall any previously installed versions before installing this version.
+
 - Support for Android 17.
 - Option to select wordlist for generating passphrases.
 - Include numbers while generating passphrases.

@@ -1,7 +1,8 @@
+BELANGRIJK: De ondertekeningssleutel van de app is gewijzigd. Verwijder alle eerder geïnstalleerde versies voordat je deze versie installeert.
+
 - Ondersteuning voor Android 17.
 - Optie om een woordenlijst te selecteren voor het genereren van wachtzinnen.
 - Cijfers opnemen bij het genereren van wachtzinnen.
 - Details weergeven voor gegenereerde wachtzinnen.
 - Optie toegevoegd om gekopieerde items automatisch te wissen.
 - Diverse optimalisaties.
-- Nieuwe vertalingen en bijgewerkte bestaande vertalingen (aangeleverd door de community).

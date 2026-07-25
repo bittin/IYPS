@@ -1,7 +1,8 @@
+WICHTIG: Der Signaturschlüssel der App wurde geändert. Bitte deinstallieren Sie alle zuvor installierten Versionen, bevor Sie diese Version installieren.
+
 - Unterstützung für Android 17.
 - Option zur Auswahl einer Wortliste für die Generierung von Passphrasen.
 - Einbeziehung von Zahlen bei der Generierung von Passphrasen.
 - Anzeige von Details zu generierten Passphrasen.
 - Option zum automatischen Löschen kopierter Einträge hinzugefügt.
 - Zahlreiche Optimierungen.
-- Neue Übersetzungen und Aktualisierung bestehender Übersetzungen (von der Community beigesteuert).
